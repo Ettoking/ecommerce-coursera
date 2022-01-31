@@ -4,6 +4,8 @@ const app = express();
 
 const PORT = process.env.PORT || 4001;
 
+// npm i dotenv
+
 // per passare json
 app.use(express.json());
 
