@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+const { products, getProducts } = require('./sql/queries');
 
 const PORT = process.env.PORT || 4001;
 
@@ -71,6 +72,8 @@ app.get('/register', checkAuthenticated, (req, res) => {
 app.get('/dashboard', checkNotAuthenticated, (req, res) => {
     res.render('dashboard', { user: req.user.name });
 });
+
+app.get('/products', getProducts);
 
 app.get('/logout', (req, res) => {
     req.logOut();
