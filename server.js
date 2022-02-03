@@ -5,6 +5,8 @@ const { products, getProducts } = require('./sql/queries');
 
 const PORT = process.env.PORT || 4001;
 
+const { checkAuthenticated, checkNotAuthenticated } = require("./services/AuthServices");
+
 // npm i dotenv
 
 // per passare json
@@ -53,6 +55,7 @@ app.use(passport.session());
 
 // npm i express-flash
 const flash = require('express-flash');
+
 
 app.use(flash());
 
@@ -162,6 +165,8 @@ app.post('/register', async (req, res) => {
 });
 
 
+
+
 app.post('/login', passport.authenticate('local', {
     successRedirect: "/dashboard",
     failureRedirect: "/login",
@@ -170,20 +175,6 @@ app.post('/login', passport.authenticate('local', {
 );
 
 
-function checkAuthenticated(req, res, next){
-    if (req.isAuthenticated()){
-        return res.redirect('/dashboard');
-    }
-    next();
-}
-
-
-function checkNotAuthenticated(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }
-    res.redirect('/login');
-}
 
 
 app.listen(PORT, ()=> {
