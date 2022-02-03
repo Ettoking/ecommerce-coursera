@@ -1,5 +1,5 @@
 //npm i pg
-const { idle_in_transaction_session_timeout } = require('pg/lib/defaults');
+
 const pool = require('../db');
 
 const getProducts = (req, res) => {

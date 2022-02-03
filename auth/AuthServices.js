@@ -1,5 +1,4 @@
-
-const initializePassport = require(`../passportConfig`);
+const initializePassport = require(`./passportConfig`);
 
 
 function checkAuthenticated(req, res, next){
