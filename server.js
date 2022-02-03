@@ -71,7 +71,7 @@ const {
 } = require("./auth/AuthServices");
 
 const {  
-    getProducts 
+    getAllProducts 
 } = require('./routes/product');
 
 app.get('/', getIndex);
@@ -82,7 +82,7 @@ app.get('/register', checkAuthenticated, getRegister);
 
 app.get('/dashboard', checkNotAuthenticated, getDashboard);
 
-app.get('/products', getProducts);
+app.get('/products', getAllProducts);
 
 app.get('/logout', getLogout)
 
@@ -94,6 +94,12 @@ app.post('/login', passport.authenticate('local', {
     failureFlash: true
     })
 );
+
+
+// admin section
+const { getAdminLogin } = require('./admin/admin');
+
+app.get('/admin', getAdminLogin);
 
 
 

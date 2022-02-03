@@ -2,7 +2,7 @@
 
 const pool = require('../db');
 
-const getProducts = (req, res) => {
+const getAllProducts = (req, res) => {
     pool.query('SELECT name FROM products ORDER BY id ASC', (error, results) => {
         if (error) {
           throw error
@@ -33,6 +33,6 @@ const addToCart = (req, res) => {
 
 
 module.exports = {
-    getProducts,
+    getAllProducts,
     addToCart
 }
