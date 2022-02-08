@@ -1,30 +1,25 @@
 const express = require('express');
 const app = express();
-
 const PORT = process.env.PORT || 4001;
 
 
 // npm i dotenv
-
 // per passare json
 app.use(express.json());
-
 // senza urlencoded il form non passa i dati
 app.use(express.urlencoded({ extended : false }));
-
 // npm i ejs
 app.set('view engine', 'ejs');
-
 // npm i bcrypt
 const bcrypt = require('bcrypt');
-
 //npm i pg
 const pool = require('./db');
+// npm i express-flash
+const flash = require('express-flash');
+app.use(flash());
 
 
-
-/** PER LA SESSIONE */
-
+/******************** PER LA SESSIONE ***************************************** */
 // npm i express-session
 const session = require('express-session');
 
@@ -33,7 +28,6 @@ const session = require('express-session');
 const passport = require('passport');
 const initializePassport = require(`./auth/passportConfig`);
 initializePassport(passport);
-
 
 app.use(session({
     secret: 'secret',
@@ -46,16 +40,11 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-/** FINE */
-
-
-// npm i express-flash
-const flash = require('express-flash');
-app.use(flash());
+/*************************** FINE ***************************************** */
 
 
 
+/************************* user section ******************************************* */
 const { 
     getIndex, 
     getLogin, 
@@ -75,33 +64,33 @@ const {
 } = require('./routes/product');
 
 app.get('/', getIndex);
-
 app.get('/login', checkAuthenticated, getLogin);
-
 app.get('/register', checkAuthenticated, getRegister);
-
 app.get('/dashboard', checkNotAuthenticated, getDashboard);
-
 app.get('/products', getAllProducts);
-
 app.get('/logout', getLogout)
 
 app.post('/register', postRegister);
-
 app.post('/login', passport.authenticate('local', {
     successRedirect: "/dashboard",
     failureRedirect: "/login",
     failureFlash: true
     })
 );
+/******************************************************************************** */
 
 
-// admin section
-const { getAdminLogin } = require('./admin/admin');
+/****************************** admin section ************************************************** */
+const { 
+    getAdminLogin, 
+    getadmindashboard, 
+    postAdminLogin
+} = require('./admin/admin');
 
 app.get('/admin', getAdminLogin);
-
-
+app.get('/admindashboard', getadmindashboard);
+app.post('/admin', postAdminLogin);
+/********************************************************************************** */
 
 
 app.listen(PORT, ()=> {
